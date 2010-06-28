@@ -47,7 +47,7 @@ class PayDepositPaymentFormDecorator extends DataObjectDecorator{
 	function onBeforePayment(&$registration,&$payment,&$data,&$form){
 		
 		if($afield = $form->Fields()->fieldByName('Amount')){
-			$payment->Amount = $afield->Value();
+			$payment->Amount = $afield->dataValue();
 			$payment->write();		
 		}
 	}
