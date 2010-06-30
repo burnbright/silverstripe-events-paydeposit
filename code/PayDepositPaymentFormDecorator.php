@@ -7,7 +7,8 @@ class PayDepositPaymentFormDecorator extends DataObjectDecorator{
 			'db' => array(
 				'AllowPaymentModification' => 'Boolean',
 				'LowerLimitValue' => 'Currency',
-				'LowerLimitPercent' => 'Percentage'
+				'LowerLimitPercent' => 'Percentage',
+				'PaymentAmountLabel' => 'Varchar(255)'
 			)
 		);
 	}
@@ -19,8 +20,9 @@ class PayDepositPaymentFormDecorator extends DataObjectDecorator{
 		if($this->owner->AllowPaymentModification){
 			$fields->addFieldsToTab('Root.Content.BookingOptions',
 				array(
-					new NumericField('LowerLimitPercent','Minimimum percentage of total that can be paid')
-					//new CurrencyField('LowerLimitValue','Lowest amount that can be paid (will override percent, if present)')
+					new NumericField('LowerLimitPercent','Minimimum percentage of total that can be paid'),
+					new CurrencyField('LowerLimitValue','Lowest amount that can be paid (will override percent, if present)'),
+					new TextField('PaymentAmountLabel','Label for field')
 				)
 			);			
 		}
@@ -38,9 +40,10 @@ class PayDepositPaymentFormDecorator extends DataObjectDecorator{
 			
 			if($this->owner->LowerLimitPercent > 0)	$lcf->setLowerLimit(ceil((double)$datavalue * (double)$this->owner->LowerLimitPercent));
 			
-			//if($this->owner->LowerLimitValue) $lcf->setLowerLimit($this->owner->LowerLimitValue);
+			if($this->owner->LowerLimitValue > 0) $lcf->setLowerLimit($this->owner->LowerLimitValue);
 			
 			$lcf->setTitle($lcf->Title()." (deposit can be any amount ".$lcf->LabelExtra().")");
+			if($this->owner->PaymentAmountLabel) $lcf->setTitle($this->owner->PaymentAmountLabel);
 		}
 	}
 	
