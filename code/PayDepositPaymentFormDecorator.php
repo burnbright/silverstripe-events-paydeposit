@@ -21,7 +21,7 @@ class PayDepositPaymentFormDecorator extends DataObjectDecorator{
 			$fields->addFieldsToTab('Root.Content.BookingOptions',
 				array(
 					new NumericField('LowerLimitPercent','Minimimum percentage of total that can be paid'),
-					new CurrencyField('LowerLimitValue','Lowest amount that can be paid (will override percent, if present)'),
+					new NumericField('LowerLimitValue','Lowest amount that can be paid (will override percent, if present)'),
 					new TextField('PaymentAmountLabel','Label for field')
 				)
 			);			
